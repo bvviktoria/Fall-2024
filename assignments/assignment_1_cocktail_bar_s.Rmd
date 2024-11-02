@@ -62,8 +62,10 @@ cocktail_new <- cocktail_new %>% arrange(ingredients)
 How many different ingredients you will need?
 
 ```{r}
+# vector
 unq_ing <- unique(cocktail_new$ingredients)
 length(unq_ing)
+#tibble
 unique_ing <- cocktail_new |> distinct_at(vars(ingredients))
 nrow(unique_ing)
 ```
