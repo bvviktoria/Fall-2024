@@ -64,6 +64,8 @@ How many different ingredients you will need?
 ```{r}
 unq_ing <- unique(cocktail_new$ingredients)
 length(unq_ing)
+unique_ing <- cocktail_new |> distinct_at(vars(ingredients))
+nrow(unique_ing)
 ```
 
 ## 5. What are the top 10 ingredients?
