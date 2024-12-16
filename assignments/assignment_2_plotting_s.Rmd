@@ -72,13 +72,13 @@ phd <- phd |> filter(!is.na(n_phds))
 phd2 <- aggregate(phd$n_phds, by=list(phd$broad_field, phd$year), FUN = "sum")
 
 task2 <- ggplot(phd2, aes(x=Group.2, y=x, group = Group.1, color= Group.1))+
-  geom_line(size = 1.2) +
+  geom_line(linewidth = 1.2) +
   scale_x_continuous(breaks = pretty_breaks(n=4)) +
   scale_y_continuous(labels=comma_format()) +
   scale_color_brewer(palette = "Dark2") +
   theme_minimal()+
   theme(legend.position = "right") +
-  labs(title = "Nr of awarded PhDs in the US by year", x=NULL, y=NULL)
+  labs(title = "Nr of awarded PhDs in the US by year", x=NULL, y=NULL, color = "Broad field")
 
 task2
 ```

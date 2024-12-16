@@ -109,10 +109,6 @@ pain |> pivot_longer(cols= -c(ID, sex),
   geom_histogram()+
   facet_wrap(~ measure, scale ="free")
 
-## Tables
-for( i in 3:12){
-  print(table(pain[,i]))
-}
 
 ```
 
@@ -129,8 +125,6 @@ pain_cleaned <- pain |>
     sex == "woman" ~ 1
   )) |>
   filter(pain <= 10 & mindfulness <= 6)
-
-
 ```
 
 ### Model diagnostics
