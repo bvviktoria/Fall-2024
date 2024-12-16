@@ -135,9 +135,10 @@ painA_hospmdl <- lmer(pain ~ age + sex + STAI_trait + pain_cat + cortisol_serum 
 
 painA_hospmdl
 
-#Check model perofrmance
+#Check model perofrmance: linearity, Normality, homoscedasticity
 check_model(painA_hospmdl)
 
+#Residuals
 painA_cleaned |>
   mutate(residuals = summary(painA_hospmdl)$residuals) |>
   ggplot(painA_cleaned, mapping = aes(pain, residuals)) +
@@ -161,6 +162,11 @@ tidy(painA_hospmdl, conf.int = TRUE)|>
     geom_point() +
     coord_flip()
 
+#VIF
+check_collinearity(painA_hospmdl)
+
+# Autocorrelation
+check_autocorrelation(painA_hospmdl)
 ```
 
 ## Comparing complex_model_updated (Assignment 3) with painA-hosp_md (Assignment 4)
