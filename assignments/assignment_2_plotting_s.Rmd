@@ -20,9 +20,7 @@ You will have to create 3 plots based on the datasets and instructions detailed 
 knitr::opts_chunk$set(echo = FALSE)
 library(tidyverse)
 library(tidytuesdayR)
-library(ggplot2)
 library(scales)
-library(forcats)
 `````````
 
 ## Task 1: Climbing expeditions
@@ -49,8 +47,9 @@ task1 <- ggplot(climb2, mapping = aes(x=fct_reorder(top_15,n, sum), y= n, fill =
   theme_light() +
   coord_flip() +
   theme(legend.position = "bottom") +
-  labs( title="The 15 most popular peaks stacked by season of expedition", y="Number of expeditions", x="")
+  labs( title="The 15 most popular peaks stacked by season of expedition", y="Number of expeditions", x=NULL)
 
+task1
 
 ```
 
@@ -79,7 +78,7 @@ task2 <- ggplot(phd2, aes(x=Group.2, y=x, group = Group.1, color= Group.1))+
   scale_color_brewer(palette = "Dark2") +
   theme_minimal()+
   theme(legend.position = "right") +
-  labs(title = "Nr of awarded PhDs in the US by year", x="", y="")
+  labs(title = "Nr of awarded PhDs in the US by year", x=NULL, y=NULL)
 
 task2
 ```

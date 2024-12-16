@@ -62,12 +62,8 @@ cocktail_new <- cocktail_new %>% arrange(ingredients)
 How many different ingredients you will need?
 
 ```{r}
-# vector
-unq_ing <- unique(cocktail_new$ingredients)
-length(unq_ing)
-#tibble
-unique_ing <- cocktail_new |> distinct_at(vars(ingredients))
-nrow(unique_ing)
+unique_ing <- cocktail_new |>
+  summarize( unique_ingr_nr =n_distinct(ingredients))
 ```
 
 ## 5. What are the top 10 ingredients?
@@ -75,9 +71,10 @@ nrow(unique_ing)
 What are the 10 most frequently used ingredients? If there are ties, you can list more than 10.
 
 ```{r}
-top10 <- cocktail_new %>% summarise(n = n(), .by = ingredients)
-top10 <- top10 %>% arrange(desc(n))
-top10[1:10,]
+top10 <- cocktail_new |>
+  summarise(n = n(), .by = ingredients) |>
+  arrange(desc(n)) |>
+  slice_head(n = 10)
 ```
 
 ## 6. Which cocktail(s) has/have the most ingredients?
@@ -85,33 +82,40 @@ top10[1:10,]
 Count the number of ingredients and filter all the cocktails that has that many.
 
 ```{r}
-top_ing <- cocktail_new %>% summarise(db = n(), .by = name)
-top_ing <- top_ing %>% arrange(desc(db))
-top_ing <- top_ing %>% slice_max(db)
+top_ing <- cocktail_new |> 
+  summarise(db = n(), .by = name) |>
+  arrange(desc(db)) |>
+  slice_max(db)
 ```
 
 ## 7. How many ingredients appear in only one cocktail (rare ingredient)?
 
 ```{r}
-rare_ing <- cocktail_new %>% summarise(mn = n(), .by = ingredients)
-rare_ing <- rare_ing %>% arrange(mn)
-rare_ing <- rare_ing %>% slice_min(mn)
-nrow(rare_ing)
+
+rare_ingredients <- cocktail_new |>
+  summarise(mn = n(), .by = ingredients) |>
+  arrange(mn) |>
+  slice_min(mn) 
+
+rare_ing <- rare_ingredients |>
+    summarize(rare_ingredients = n())
+
 ```
 
 ## 8. Which cocktail has an ingredient that is only used in one cocktail?
 
 ```{r}
-one_ing <- as.vector(rare_ing$ingredients)
-rare_drink <- cocktail_new %>% filter(ingredients %in% one_ing)
-rare_drink <- rare_drink %>% summarise(.by = name)
+rare_drinks <- cocktail_new |>
+  filter(ingredients %in% rare_ingredients$ingredients) |>
+  summarise(.by = name)
 ```
 
 ## 9. What are the cocktails without rare ingredients?
 
 ```{r}
-common_drink <- cocktail_new %>% filter(!ingredients %in% one_ing)
-common_drink <- common_drink %>% summarise(.by = name)    
+common_drinks <- cocktail_new |> 
+  filter(!name %in% rare_drinks$name) |>
+  summarise(.by = name)    
 ```
 
 ## 10. Create a cheat sheet for the bartender!
